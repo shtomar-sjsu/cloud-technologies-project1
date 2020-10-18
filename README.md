@@ -1,2 +1,2 @@
 # cloud-technologies-project1
-Contains the code for Cloud Technologies Project1
+Contains the source code for Cloud Technologies Project1
