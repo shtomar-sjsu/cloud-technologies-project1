@@ -1,0 +1,17 @@
+{
+  "name": "project1",
+  "version": "0.0.1",
+  "description": "Project 1 - cloud technologies. It is a 3 tier we application using AWS cloud.",
+  "main": "index.js",
+  "scripts": {
+    "server": "node app.js"
+  },
+  "author": "Shivam Tomar",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
