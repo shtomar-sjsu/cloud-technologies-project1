@@ -3,6 +3,7 @@
     var user_name = sessionStorage.getItem('username');
     $(function(){
         $("#welcome").text(`Welcome ${user_name}`);
+        console.log("----read json "+ data.key);
         // $("#logout").click(() => {
         //     console.log('logout');
         //     axios.get('/logout');
