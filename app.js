@@ -2,8 +2,6 @@ var mysql = require('mysql');
 var config = require('./config');
 var express = require('express');
 const bodyParser = require('body-parser');
-const { response } = require('express');
-
 
 var server = express();
 server.use(express.static('public'));
@@ -30,7 +28,7 @@ server.get('/geturls', (req, res) => {
         console.log(error);
         // console.log(connection);
 
-        const query = req.query.user_name == "admin" ? "select url from urls;" : `select url from urls where user_name=\'${req.query.user_name}\';`;
+        const query = req.query.user_name == "admin" ? 'select urls.url, urls.creation_date, urls.modify_date, urls.description, users.first_name, users.last_name, users.user_name from urls join users on urls.user_name=users.user_name;' : `select urls.url, urls.creation_date, urls.modify_date, urls.description, users.first_name, users.last_name, users.user_name from urls join users on urls.user_name=users.user_name where urls.user_name=\'${req.query.user_name}\';`;
         console.log(query);
         connection.query(query, (error, results, fields) => {
             connection.release();    
@@ -53,7 +51,26 @@ server.post('/addurl', (req, res) => {
         console.log(error);
         // console.log(connection);
 
-        connection.query(`insert into urls values(\'${req.body.user_name}\',\'${req.body.url}\');`, (error, results, fields) => {
+        connection.query(`insert into urls values(\'${req.body.user_name}\',now(),\'\','',\'${req.body.url}\');`, (error, results, fields) => {
+            connection.release();    
+            if(error){
+                res.status(500).send("error");
+            }
+            else{
+                res.status(200).send(results);
+            }            
+        });        
+    });        
+});
+
+server.post('/updateurl', (req, res) => {
+    console.log(req);
+    pool.getConnection((error, connection) => {
+    
+        console.log(error);
+        // console.log(connection);
+
+        connection.query(`update urls set modify_date=now() where url=\'${req.url}\';`, (error, results, fields) => {
             connection.release();    
             if(error){
                 res.status(500).send("error");

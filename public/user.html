@@ -16,19 +16,16 @@
 
         <script type="text/javascript">
         console.log("--- uploading "+ data.id);
-            //Bucket Configurations
-            var bucketName = "test-bucket-sjsu";
-            var bucketRegion = "us-west-2";            
-            
+            //Bucket Configurations                               
              AWS.config.update({
-                            region: bucketRegion,                            
+                            region: data.bucketRegion,                            
                             accessKeyId: data.id,
                             secretAccessKey: data.secret
                         });
             
                         var s3 = new AWS.S3({
                             apiVersion: '2006-03-01',
-                            params: {Bucket: bucketName}
+                            params: {Bucket: data.bucketName}
                         });
 
                         function abc(){
@@ -39,7 +36,7 @@
                     var file = files[0];
                     var fileName = file.name;
                     var filePath = fileName;
-                    var fileUrl = 'https://' +bucketName+"."+ "s3-"+bucketRegion + '.amazonaws.com/'+fileName;
+                    var fileUrl = 'https://' +data.bucketName+"."+ "s3-"+data.bucketRegion + '.amazonaws.com/'+fileName;
                     s3.upload({
                     Key: filePath,
                     Body: file,
@@ -50,7 +47,16 @@
                     // reject('error');
                     }
                     else{
-                        console.log(JSON.stringify(data));
+                        console.log(data.key);
+                        axios.post('/addurl', {
+                            "user_name":sessionStorage.getItem('username'),
+                            "url":data.key
+                        }).then((response) => {
+                            console.log(`added image url ${JSON.stringify(response)}`);
+                        },
+                        (error) => {
+                            console.log(`error in adding image url ${JSON.stringify(error)}`);
+                        });
                     }
                     alert('Successfully Uploaded!');
                     });                    
@@ -94,10 +100,14 @@
             </form>
         </nav>
         <hr>
+        <div class="navbar navbar-light bg-light justify-content-between" id="container">
+
+        </div>
+        <hr>
         <nav class="navbar navbar-light bg-light justify-content-between">
             <label for="fileuplaod" class="navbar-brand">Choose a file to upload</label>
             <input type="file" id="fileupload">
-            <button onclick="abc()" id="upload">Upload</button>
+            <button onclick="abc()" id="upload" class="btn btn-outline-primary">Upload</button>
         </nav>
 
         
