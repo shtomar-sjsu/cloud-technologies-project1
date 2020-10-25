@@ -12,85 +12,57 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.774.0.min.js"></script>
         <script src="./js/s3config.json"></script>
-        <script src="./js/users.js"></script>
+        <script src="./js/users.js"></script>                    
 
-        <script type="text/javascript">
-        console.log("--- uploading "+ data.id);
-            //Bucket Configurations                               
-             AWS.config.update({
-                            region: data.bucketRegion,                            
-                            accessKeyId: data.id,
-                            secretAccessKey: data.secret
-                        });
+        <script>
+            function upload() {
+
+            AWS.config.update({
+            region: data.bucketRegion,                            
+            accessKeyId: data.id,
+            secretAccessKey: data.secret
+        });
+            var s3 = new AWS.S3({
+            apiVersion: '2006-03-01',
+            params: {Bucket: data.bucketName}
+        });
+        console.log("uploadS3");
+        var files = document.getElementById('fileupload').files;
+        console.log("about to upload file" + files);
+        if (files) 
+        {
             
-                        var s3 = new AWS.S3({
-                            apiVersion: '2006-03-01',
-                            params: {Bucket: data.bucketName}
-                        });
-
-                        function abc(){
-                            console.log("abc");
-                                            var files = document.getElementById('fileupload').files;
-                    if (files) 
-                    {
-                    var file = files[0];
-                    var fileName = file.name;
-                    var filePath = fileName;
-                    var fileUrl = 'https://' +data.bucketName+"."+ "s3-"+data.bucketRegion + '.amazonaws.com/'+fileName;
-                    s3.upload({
-                    Key: filePath,
-                    Body: file,
-                    ACL: 'public-read'
-                    }, function(err, data) {
+            var file = files[0];
+            var fileName = file.name;
+            var filePath = fileName;
+            var fileUrl = 'https://' +data.bucketName+"."+ "s3-"+data.bucketRegion + '.amazonaws.com/'+fileName;
+            s3.upload({
+                Key: filePath,
+                Body: file,
+                ACL: 'public-read'
+                }, function(err, data) {
                     if(err) {
-                        console.log(`error in uploading ${err}`);
-                    // reject('error');
+                    console.log(`error in uploading ${err}`);
+
                     }
                     else{
                         console.log(data.key);
                         axios.post('/addurl', {
-                            "user_name":sessionStorage.getItem('username'),
-                            "url":data.key
-                        }).then((response) => {
-                            console.log(`added image url ${JSON.stringify(response)}`);
-                        },
-                        (error) => {
-                            console.log(`error in adding image url ${JSON.stringify(error)}`);
-                        });
-                    }
-                    alert('Successfully Uploaded!');
-                    });                    
-      }
-                        }
-
-    //                     $("#upload").click(() => {
-    //                         console.log("---1---");
-    //                 var files = document.getElementById('fileUpload').files;
-    //                 if (files) 
-    //                 {
-    //                 var file = files[0];
-    //                 var fileName = file.name;
-    //                 var filePath = 'test-bucket-sjsu/' + fileName;
-    //                 var fileUrl = 'https://' +bucketName+"."+ bucketRegion + '.amazonaws.com/'+fileName;
-    //                 s3.upload({
-    //                 Key: filePath,
-    //                 Body: file,
-    //                 ACL: 'public-read'
-    //                 }, function(err, data) {
-    //                 if(err) {
-    //                     console.log(`error in uploading ${err}`);
-    //                 reject('error');
-    //                 }
-    //                 alert('Successfully Uploaded!');
-    //                 });
-                    
-    //   }
-    //                     });
-                    
-
-            </script>
-
-            
+                        "user_name":sessionStorage.getItem('username'),
+                        "url":data.key
+                    }).then((response) => {
+                    console.log(`added image url ${JSON.stringify(response)}`);
+                    location.reload();
+                    },
+                (error) => {
+                console.log(`error in adding image url ${JSON.stringify(error)}`);
+            });
+        }
+        alert('Successfully Uploaded!');
+        });                    
+    }
+    };    
+        </script>
     </head>
     <body">
         <nav class="navbar navbar-light bg-light justify-content-between">
@@ -107,7 +79,7 @@
         <nav class="navbar navbar-light bg-light justify-content-between">
             <label for="fileuplaod" class="navbar-brand">Choose a file to upload</label>
             <input type="file" id="fileupload">
-            <button onclick="abc()" id="upload" class="btn btn-outline-primary">Upload</button>
+            <button onclick="upload()" id="upload" class="btn btn-outline-primary">Upload</button>
         </nav>
 
         

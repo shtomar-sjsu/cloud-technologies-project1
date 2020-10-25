@@ -70,7 +70,7 @@ server.post('/updateurl', (req, res) => {
         console.log(error);
         // console.log(connection);
 
-        connection.query(`update urls set modify_date=now() where url=\'${req.url}\';`, (error, results, fields) => {
+        connection.query(`update urls set modify_date=now() where url=\'${req.body.url}\';`, (error, results, fields) => {
             connection.release();    
             if(error){
                 res.status(500).send("error");
@@ -123,6 +123,25 @@ server.post('/login', (req, res) => {
                 }
             }            
         });        
+    });
+});
+
+server.post('/deleteurl', (req, res) => {
+    const body = req.body;
+    console.log(`deleting object ${JSON.stringify(body)}`);
+    pool.getConnection((error, connection) => {
+        if(connection){
+            connection.query(`delete from urls where url='${body.url}';`, (error, results, fileds) => {
+                connection.release();
+                if(error){
+                    res.status(500).json(error).end();
+                }
+                else{
+                    res.status(200).json(results).end();
+                }
+            });
+        }
+
     });
 });
 
