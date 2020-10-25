@@ -78,7 +78,8 @@
             s3.upload({
                 Key: filePath,
                 Body: file,
-                ACL: 'public-read'
+                ACL: 'public-read',
+                Conditions: [['content-length-range', 0, 10000000]] //Limit on file size to be 10MB.
                 }, function(err, data) {
                     if(err) {
                     console.log(`error in uploading ${err}`);
