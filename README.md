@@ -77,6 +77,12 @@ HTTP verb: GET
 Return the user dashboard.
 HTTP verb: GET
 
+8. **/downloadfile**
+Download the file through CloudFront. The name of file to be downloaded is passed as query params.
+Ex: /download?file_name=filename.png
+HTTP verb: GET
+
+
 
 
 
