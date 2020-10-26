@@ -20,8 +20,8 @@
     
     axios.get(`/geturls?user_name=${user_name}`).then((response) => {
         console.log(`response ${JSON.stringify(response)}`);
-        var data = response.data;        
-            data.forEach((urldata) => {
+        var dataUrl = response.data;        
+            dataUrl.forEach((urldata) => {
                 console.log(`urldata to show ${JSON.stringify(urldata)}`);
                 var topDiv = $("<div class=\"navbar d-flex flex-column align-items-start navbar-light bg-light justify-content-between w-100\"></div>");
                 var heading = $(`<p class="h2">Image: ${urldata.url}</p>`);
@@ -31,7 +31,7 @@
                 var createTime = $(`<p class="h5">Create Time: ${urldata.creation_date}</p>`);
                 var modifyTime = $(`<p class="h5">Modify Time: ${urldata.modify_date}</p>`);
                 var description = $(`<p class="h5">Description: ${urldata.url}</p>`);
-                
+                console.log("---"+data.cloudfronturl);
                 var buttonDownload = $(`<a class="h5 my-2" href="${data.cloudfronturl}/${urldata.url}" download>Download ${urldata.url}</a>`);
                 var buttonDelete = $("<button class=\"btn my-2 btn-outline-primary\">Delete Image</button>").click(() => {
                     var deleteParama = {
