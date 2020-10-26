@@ -2,6 +2,8 @@ var mysql = require('mysql');
 var config = require('./config');
 var express = require('express');
 const bodyParser = require('body-parser');
+const request = require('request');
+
 
 var server = express();
 server.use(express.static('public'));
@@ -149,6 +151,13 @@ server.get('/logout', (req, res) => {
     console.log('logout server');
     res.redirect("/login");    
     res.end();
+});
+
+server.get('/downloadfile', (req, res) => {
+    const fileName = req.query.file_name;
+    const cloudFrontUrl = config.cloudfronturl + fileName;
+    console.log(`Downloading file ${cloudFrontUrl}`);
+    request.get(cloudFrontUrl).pipe(res);
 });
 
 //---HTMLS----

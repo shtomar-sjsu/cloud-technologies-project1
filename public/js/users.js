@@ -32,7 +32,7 @@
                 var modifyTime = $(`<p class="h5">Modify Time: ${urldata.modify_date}</p>`);
                 var description = $(`<p class="h5">Description: ${urldata.url}</p>`);
                 console.log("---"+data.cloudfronturl);
-                var buttonDownload = $(`<a class="h5 my-2" href="${data.cloudfronturl}/${urldata.url}" download>Download ${urldata.url}</a>`);
+                var buttonDownload = $(`<a class="h5 my-2" href="/downloadfile?file_name=${urldata.url}" download>Download ${urldata.url}</a>`);
                 var buttonDelete = $("<button class=\"btn my-2 btn-outline-primary\">Delete Image</button>").click(() => {
                     var deleteParama = {
                         Bucket: data.bucketName,
