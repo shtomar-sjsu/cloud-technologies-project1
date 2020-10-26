@@ -3,8 +3,8 @@
     var s3;
     var user_name = sessionStorage.getItem('username');
     $(function(){
-        $("#welcome").text(`Welcome ${user_name}`);
-        console.log("----read json "+ data.key);                
+        $("#welcome").text(`Welcome ${user_name}`);        
+        console.log("----read json "+ data.cloudfronturl);                
         AWS.config.update({
             region: data.bucketRegion,                            
             accessKeyId: data.id,
